@@ -5,10 +5,7 @@ import com.arturcampos.urlshortener.repository.UrlRepository
 import com.arturcampos.urlshortener.service.impl.URLShortenerServiceImpl
 import com.arturcampos.urlshortener.utils.HashingUtility
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 import java.util.*
 
@@ -34,7 +31,7 @@ class URLShortenerServiceImplTest {
     }
 
     @org.junit.jupiter.api.Test
-    fun retrieveOriginal() {
+    fun shouldRetrieveOriginal() {
         //given
         val givenShortenedURL = createShortenedURL()
         val urlRepository: UrlRepository = Mockito.mock(UrlRepository::class.java)
@@ -46,6 +43,19 @@ class URLShortenerServiceImplTest {
 
         //then
         assertEquals(givenShortenedURL.url, originalURL)
+    }
+
+    @org.junit.jupiter.api.Test
+    fun shouldNotRetrieveOriginalWithIllegalArgumentException() {
+        //given
+        val givenShortenedURL = createShortenedURL()
+        val urlRepository: UrlRepository = Mockito.mock(UrlRepository::class.java)
+        whenever(urlRepository.findById(Mockito.any())).thenReturn(Optional.empty())
+        val urlShortenerService: URLShortenerService = URLShortenerServiceImpl(urlRepository)
+
+        //when / then
+        assertThrows(IllegalArgumentException::class.java)
+        { urlShortenerService.retrieveOriginal(givenShortenedURL.key) }
     }
 
     private fun createShortenedURL(): ShortenedURL {
