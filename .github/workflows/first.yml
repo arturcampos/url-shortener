@@ -21,3 +21,22 @@ jobs:
       - name: Step two
         run: "Get-ChildItem Env: | Soert-Object Name"
 
+  job3:
+    name: Third Job
+    runs-on: macos-latest
+    steps:
+      - name: Step one
+        uses: action/checkout@v2
+      - name: Step two
+        run: env | sort
+  
+  job4:
+    name: Fourth Job
+    runs-on: ubuntu-latest
+    depends-on: [1,2,3]
+    steps:
+      - name: Step one
+        uses: action/checkout@v2
+      - name: Step two
+        run: "ls -a
+
