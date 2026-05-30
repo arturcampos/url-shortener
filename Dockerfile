@@ -1,6 +1,6 @@
 FROM alpine/java:21-jre
 
-COPY target/*.java app.java
+COPY target/*.jar app.jar
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.java"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
